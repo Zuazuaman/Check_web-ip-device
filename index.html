@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deteksi Device</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Mendeteksi perangkat
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const deviceType = isMobile ? 'Mobile Device' : 'Desktop';
+
+    // Mendeteksi sistem operasi
+    const os = navigator.platform;
+
+    // Mendeteksi browser
+    const isChrome = /Chrome/.test(navigator.userAgent);
+    const isFirefox = /Firefox/.test(navigator.userAgent);
+    const isSafari = /Safari/.test(navigator.userAgent);
+    const isEdge = /Edg/.test(navigator.userAgent);
+    const isOpera = /OPR/.test(navigator.userAgent);
+    const isIE = /Trident/.test(navigator.userAgent); // Internet Explorer
+    const isBrave = /Brave/.test(navigator.userAgent);
+    const isVivaldi = /Vivaldi/.test(navigator.userAgent);
+    const isSamsung = /SamsungBrowser/.test(navigator.userAgent);
+    const isMaxthon = /Maxthon/.test(navigator.userAgent);
+    const isYandex = /YaBrowser/.test(navigator.userAgent);
+    const isUCBrowser = /UCBrowser/.test(navigator.userAgent);
+    const isPaleMoon = /PaleMoon/.test(navigator.userAgent);
+    const isWaterfox = /Waterfox/.test(navigator.userAgent);
+    const isSeaMonkey = /SeaMonkey/.test(navigator.userAgent);
+    const isAvast = /Avast/.test(navigator.userAgent);
+    const isEpic = /EpicBrowser/.test(navigator.userAgent);
+    const isMidori = /Midori/.test(navigator.userAgent);
+
+    // Mendeteksi search engine
+    const isGoogleBot = /Googlebot/.test(navigator.userAgent) || /Google Page Speed/.test(navigator.userAgent);
+    const isBingBot = /bingbot/.test(navigator.userAgent);
+    const isYahooBot = /Yahoo/.test(navigator.userAgent);
+    const isBaiduBot = /Baidu/.test(navigator.userAgent);
+    const isYandexBot = /YandexBot/.test(navigator.userAgent);
+    const isDuckDuckGoBot = /DuckDuckGo/.test(navigator.userAgent);
+    const isAskBot = /Ask Jeeves/.test(navigator.userAgent);
+    const isAOLBot = /AOL/.test(navigator.userAgent);
+    const isNaverBot = /Naver/.test(navigator.userAgent);
+    const isSeznamBot = /Seznam/.test(navigator.userAgent);
+
+    let browser;
+
+    if (isChrome) {
+      browser = 'Google Chrome';
+    } else if (isFirefox) {
+      browser = 'Mozilla Firefox';
+    } else if (isSafari) {
+      browser = 'Safari';
+    } else if (isEdge) {
+      browser = 'Microsoft Edge';
+    } else if (isOpera) {
+      browser = 'Opera';
+    } else if (isIE) {
+      browser = 'Internet Explorer';
+    } else if (isBrave) {
+      browser = 'Brave';
+    } else if (isVivaldi) {
+      browser = 'Vivaldi';
+    } else if (isSamsung) {
+      browser = 'Samsung Internet Browser';
+    } else if (isMaxthon) {
+      browser = 'Maxthon';
+    } else if (isYandex) {
+      browser = 'Yandex Browser';
+    } else if (isUCBrowser) {
+      browser = 'UC Browser';
+    } else if (isPaleMoon) {
+      browser = 'Pale Moon';
+    } else if (isWaterfox) {
+      browser = 'Waterfox';
+    } else if (isSeaMonkey) {
+      browser = 'SeaMonkey';
+    } else if (isAvast) {
+      browser = 'Avast Secure Browser';
+    } else if (isEpic) {
+      browser = 'Epic Browser';
+    } else if (isMidori) {
+      browser = 'Midori';
+    } else {
+      browser = 'Unknown Browser';
+    }
+
+    // Mendeteksi search engine
+    const isGoogle = isGoogleBot || /Googlebot/.test(navigator.userAgent);
+    const isBing = isBingBot || /bingbot/.test(navigator.userAgent);
+    const isYahoo = isYahooBot || /Yahoo/.test(navigator.userAgent);
+    const isBaidu = isBaiduBot || /Baidu/.test(navigator.userAgent);
+    const isYandexEngine = isYandexBot || /YandexBot/.test(navigator.userAgent);
+    const isDuckDuckGo = isDuckDuckGoBot || /DuckDuckGo/.test(navigator.userAgent);
+    const isAsk = isAskBot || /Ask Jeeves/.test(navigator.userAgent);
+    const isAOL = isAOLBot || /AOL/.test(navigator.userAgent);
+    const isNaver = isNaverBot || /Naver/.test(navigator.userAgent);
+    const isSeznam = isSeznamBot || /Seznam/.test(navigator.userAgent);
+
+    // Mendeteksi fitur tambahan
+    const hasCookiesEnabled = navigator.cookieEnabled;
+    const hasLocalStorage = typeof(Storage) !== 'undefined';
+    const hasWebGL = (function () {
+      try {
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        return !!context;
+      } catch (e) {
+        return false;
+      }
+    })();
+    const hasWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
+    const hasTouchEvents = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+    const hasGeolocation = 'geolocation' in navigator;
+
+    // Mendeteksi IP address (menggunakan layanan eksternal untuk mendapatkan IP address)
+    const getIpAddress = async () => {
+      try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+      } catch (error) {
+        console.error('Error fetching IP address:', error);
+        return 'Not Available';
+      }
+    };
+
+    // Mendeteksi jenis IP (IPv4/IPv6)
+    const getIpVersion = async () => {
+      try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        return data.version;
+      } catch (error) {
+        console.error('Error fetching IP version:', error);
+        return 'Not Available';
+      }
+    };
+
+    // Mendeteksi VPN dan proxy (dengan cara yang sederhana)
+    const isVPN = /VPN/.test(navigator.userAgent) || /Proxy/.test(navigator.userAgent);
+
+    // Menampilkan hasil deteksi dalam tabel
+    Promise.all([getIpAddress(), getIpVersion()])
+      .then(([ipAddress, ipVersion]) => {
+        const table = document.createElement('table');
+        const tbody = table.createTBody();
+
+        tbody.innerHTML = `
+          <tr>
+            <th>Device Type</th>
+            <td>${deviceType}</td>
+          </tr>
+          <tr>
+            <th>Operating System</th>
+            <td>${os}</td>
+          </tr>
+          <tr>
+            <th>Browser</th>
+            <td>${browser}</td>
+          </tr>
+          <tr>
+            <th>Search Engine</th>
+            <td>${isGoogle ? 'Google' : (isBing ? 'Bing' : (isYahoo ? 'Yahoo' : (isBaidu ? 'Baidu' : (isYandexEngine ? 'Yandex' : (isDuckDuckGo ? 'DuckDuckGo' : (isAsk ? 'Ask Jeeves' : (isAOL ? 'AOL' : (isNaver ? 'Naver' : (isSeznam ? 'Seznam' : 'Not a Search Engine')))))))))}</td>
+          </tr>
+          <tr>
+            <th>IP Address</th>
+            <td>${ipAddress}</td>
+          </tr>
+          <tr>
+            <th>IP Version</th>
+            <td>${ipVersion}</td>
+          </tr>
+          <tr>
+            <th>VPN or Proxy</th>
+            <td>${isVPN ? 'Yes' : 'No'}</td>
+          </tr>
+          <tr>
+            <th>Cookies Enabled</th>
+            <td>${hasCookiesEnabled ? 'Yes' : 'No'}</td>
+          </tr>
+          <tr>
+            <th>Local Storage</th>
+            <td>${hasLocalStorage ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+          <tr>
+            <th>WebGL Support</th>
+            <td>${hasWebGL ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+          <tr>
+            <th>WebSockets Support</th>
+            <td>${hasWebSockets ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+          <tr>
+            <th>Touch Events</th>
+            <td>${hasTouchEvents ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+          <tr>
+            <th>Geolocation</th>
+            <td>${hasGeolocation ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+        `;
+
+        document.body.appendChild(table);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
