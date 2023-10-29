@@ -55,6 +55,15 @@
       os = 'Unknown OS';
     }
 
+    // Mendeteksi merek perangkat dari user agent string
+    const getDeviceBrand = () => {
+      const userAgent = navigator.userAgent;
+      const brandMatches = userAgent.match(/(Samsung|Apple|Sony|LG|Google|Microsoft|Huawei|Xiaomi|HP|Dell|Acer)/i);
+      return brandMatches ? brandMatches[0] : 'Unknown Brand';
+    };
+
+    const deviceBrand = getDeviceBrand();
+
     // Mendeteksi browser
     const isChrome = /Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
@@ -198,6 +207,10 @@
           <tr>
             <th>Operating System</th>
             <td>${os}</td>
+          </tr>
+          <tr>
+            <th>Device Brand</th>
+            <td>${deviceBrand}</td>
           </tr>
           <tr>
             <th>Browser</th>
