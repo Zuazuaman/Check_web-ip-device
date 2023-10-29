@@ -235,13 +235,14 @@ const getIPv6Address = async () => {
 // Menambahkan ke dalam Promise.all
 // Mendeteksi kecepatan koneksi (kbps dan mbps)
 // Mendeteksi kecepatan koneksi (kbps dan mbps)
+<!-- Mengganti URL pada fungsi getNetworkSpeed -->
 const getNetworkSpeed = async () => {
   try {
     const startTime = new Date().getTime();
-    const response = await fetch('https://www.example.com/speed-test?size=5000000'); // 5 MB file
+    const response = await fetch('https://Zuazuaman.github.io/Check_web-ip-device/internet_speed_test.html'); // Ganti dengan URL sesuai dengan lokasi speed-test.html di server Anda
     const endTime = new Date().getTime();
-    const duration = (endTime - startTime) / 1000; // in seconds
-    const fileSize = 5 * 1024 * 1024; // 5 MB file size
+    const duration = (endTime - startTime) / 1000; // dalam detik
+    const fileSize = response.headers.get('content-length') || 5000000; // Asumsikan ukuran file jika content-length tidak tersedia
     const speedKbps = (fileSize / duration / 1024).toFixed(2);
     const speedMbps = (speedKbps / 1024).toFixed(2);
     return { kbps: speedKbps, mbps: speedMbps };
