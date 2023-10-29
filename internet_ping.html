@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Monitor</title>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+    canvas {
+      max-width: 600px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ping Monitor</h1>
+  <canvas id="pingChart"></canvas>
+  <p>Last Ping Time: <span id="lastPingTime">-</span> ms</p>
+
+  <script>
+    var ctx = document.getElementById('pingChart').getContext('2d');
+
+    var websites = [
+      'https://www.google.com',
+      'https://www.bing.com',
+      'https://github.com',
+      'https://www.chatgpt.com',
+      'https://www.microsoft.com',
+      'https://discord.com',
+      'https://web.whatsapp.com',
+      'https://www.youtube.com',
+      'https://www.roblox.com',
+      'https://play.google.com'
+    ];
+
+    var pingData = {};
+    
+    websites.forEach(function (website) {
+      pingData[website] = {
+        labels: [],
+        datasets: [{
+          label: 'Ping Time (ms)',
+          data: [],
+          fill: false,
+          borderColor: getRandomColor(),
+          borderWidth: 2
+        }]
+      };
+    });
+
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    var pingCharts = {};
+
+    websites.forEach(function (website) {
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: pingData[website],
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      pingCharts[website] = chart;
+    });
+
+    function detectPing() {
+      websites.forEach(function (website) {
+        var xhr = new XMLHttpRequest();
+        var startTime = new Date().getTime();
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4) {
+            var endTime = new Date().getTime();
+            var pingTime = endTime - startTime;
+
+            // Tambahkan nilai ping ke data grafik
+            pingData[website].labels.push(new Date().toLocaleTimeString());
+            pingData[website].datasets[0].data.push(pingTime);
+
+            // Perbarui elemen HTML untuk menampilkan waktu ping terakhir
+            document.getElementById('lastPingTime').innerText = pingTime + ' ms';
+
+            // Hapus data yang lebih lama jika lebih dari 10 entri
+            if (pingData[website].labels.length > 10) {
+              pingData[website].labels.shift();
+              pingData[website].datasets[0].data.shift();
+            }
+
+            // Perbarui grafik
+            pingCharts[website].update();
+          }
+        };
+
+        xhr.open('GET', website, true);
+        xhr.send();
+      });
+    }
+
+    // Panggil fungsi detectPing setiap 3 detik
+    setInterval(detectPing, 3000);
+  </script>
+</body>
+</html>
