@@ -28,7 +28,32 @@
     const deviceType = isMobile ? 'Mobile Device' : 'Desktop';
 
     // Mendeteksi sistem operasi
-    const os = navigator.platform;
+    const platform = navigator.platform;
+    let os;
+
+    if (platform.toLowerCase().includes('win')) {
+      os = 'Windows';
+      if (/Win64/.test(navigator.userAgent)) {
+        os += ' 64-bit';
+      } else if (/Win32/.test(navigator.userAgent)) {
+        os += ' 32-bit';
+      }
+    } else if (platform.toLowerCase().includes('mac')) {
+      os = 'macOS';
+    } else if (platform.toLowerCase().includes('linux')) {
+      os = 'Linux';
+      if (/Android/.test(navigator.userAgent)) {
+        os += ' (Android)';
+      }
+    } else if (platform.toLowerCase().includes('iphone') || platform.toLowerCase().includes('ipad') || platform.toLowerCase().includes('ipod')) {
+      os = 'iOS';
+    } else if (platform.toLowerCase().includes('android')) {
+      os = 'Android';
+    } else if (platform.toLowerCase().includes('x11')) {
+      os = 'UNIX';
+    } else {
+      os = 'Unknown OS';
+    }
 
     // Mendeteksi browser
     const isChrome = /Chrome/.test(navigator.userAgent);
