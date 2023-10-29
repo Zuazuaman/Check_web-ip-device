@@ -194,11 +194,65 @@
     const isVPN = /VPN/.test(navigator.userAgent) || /Proxy/.test(navigator.userAgent);
 
     // Menampilkan hasil deteksi dalam tabel
-    Promise.all([getIpAddress(), getIpVersion()])
-      .then(([ipAddress, ipVersion]) => {
-        const table = document.createElement('table');
-        const tbody = table.createTBody();
+    // Mendeteksi ping ke komputer
+const getPing = async () => {
+  try {
+    const startTime = new Date().getTime();
+    const response = await fetch(window.location.href, { method: 'HEAD' });
+    const endTime = new Date().getTime();
+    return endTime - startTime;
+  } catch (error) {
+    console.error('Error fetching ping:', error);
+    return 'Not Available';
+  }
+};
 
+// Mendeteksi kecepatan koneksi (kbps)
+const getNetworkSpeed = async () => {
+  try {
+    const fileSize = 5 * 1024 * 1024; // 5 MB file
+    const startTime = new Date().getTime();
+    await fetch(`https://www.example.com/speed-test?size=${fileSize}`);
+    const endTime = new Date().getTime();
+    const duration = (endTime - startTime) / 1000; // in seconds
+    const speedKbps = (fileSize / duration / 1024).toFixed(2);
+    return speedKbps;
+  } catch (error) {
+    console.error('Error fetching network speed:', error);
+    return 'Not Available';
+  }
+};
+
+// Mendeteksi IPv4 address
+const getIPv4Address = async () => {
+  try {
+    const response = await fetch('https://api64.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.error('Error fetching IPv4 address:', error);
+    return 'Not Available';
+  }
+};
+
+// Mendeteksi IPv6 address
+const getIPv6Address = async () => {
+  try {
+    const response = await fetch('https://api64.ipify.org?format=json');
+    const data = await response.json();
+    const ipv6 = data.ipv6;
+    return ipv6 ? ipv6 : 'Not Available';
+  } catch (error) {
+    console.error('Error fetching IPv6 address:', error);
+    return 'Not Available';
+  }
+};
+
+// Menambahkan ke dalam Promise.all
+Promise.all([getIpAddress(), getIpVersion(), getPing(), getNetworkSpeed(), getIPv4Address(), getIPv6Address()])
+  .then(([ipAddress, ipVersion, ping, networkSpeed, ipv4Address, ipv6Address]) => {
+    const table = document.createElement('table');
+    const tbody = table.createTBody();
         tbody.innerHTML = `
           <tr>
             <th>Device Type</th>
@@ -255,6 +309,22 @@
           <tr>
             <th>Geolocation</th>
             <td>${hasGeolocation ? 'Supported' : 'Not Supported'}</td>
+          </tr>
+          <tr>
+            <th>Ping</th>
+            <td>${ping} ms</td>
+          </tr>
+          <tr>
+             <th>Network Speed</th>
+             <td>${networkSpeed} kbps</td>
+          </tr>
+          <tr>
+             <th>IPv4 Address</th>
+             <td>${ipv4Address}</td>
+          </tr>
+          <tr>
+             <th>IPv6 Address</th>
+             <td>${ipv6Address}</td>
           </tr>
         `;
 
