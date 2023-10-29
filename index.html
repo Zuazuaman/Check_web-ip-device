@@ -253,6 +253,7 @@ Promise.all([getIpAddress(), getIpVersion(), getPing(), getNetworkSpeed(), getIP
   .then(([ipAddress, ipVersion, ping, networkSpeed, ipv4Address, ipv6Address]) => {
     const table = document.createElement('table');
     const tbody = table.createTBody();
+    
         tbody.innerHTML = `
           <tr>
             <th>Device Type</th>
